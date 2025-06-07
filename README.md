@@ -9,7 +9,7 @@
 
 - 📤 Upload any image
 - 📝 Generate smart captions using **BLIP-2**
-- 😊 Detect emotion using **DeepFace**
+- 😊 Detect emotion using **Keywords in generated caption**
 - 🎶 Recommend music using **Last.fm API**
 - 🔐 Environment variables for API security
 - 🧪 Includes test scripts for key modules
@@ -22,10 +22,9 @@
 - **Backend:** Python (Flask)
 - **AI Models:** 
   - [BLIP-2](https://huggingface.co/Salesforce/blip2) (image captioning)
-  - [DeepFace](https://github.com/serengil/deepface) (emotion detection)
 - **Music API:** [Last.fm API](https://www.last.fm/api)
 - **Database:** SQLite
-- **Storage/Auth:** Firebase
+
 
 ---
 
