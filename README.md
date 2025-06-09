@@ -106,7 +106,7 @@ python test_deepface.py
 ## 👩‍💻 Developed By
 
 **Harshitha Somu**  
-🔗 [GitHub](https://github.com/Harshitha-Somu) • 💼 [LinkedIn](#)
+🔗 [GitHub](https://github.com/Harshitha-Somu) • 💼 [LinkedIn](https://www.linkedin.com/in/harshitha-somu-2a2843317?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app)
 
 ---
 
