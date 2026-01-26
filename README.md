@@ -1,3 +1,12 @@
+---
+title: Image Vibes
+emoji: 🎵🖼️
+colorFrom: purple
+colorTo: pink
+sdk: docker
+app_file: app.py
+pinned: false
+---
 
 # 🎵🖼️ Image Vibes
 
