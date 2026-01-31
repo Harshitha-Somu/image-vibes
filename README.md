@@ -113,9 +113,8 @@ python test_deepface.py
 ---
 
 ## 🌐 Visit Site
-
-👉 **Visit Image Vibes here:**  
-https://your-live-site-link-here
+ 
+🟢 **Live Demo:** [Open App](https://huggingface.co/spaces/Harshitha-Somu/image-vibes)
 
 ---
 
