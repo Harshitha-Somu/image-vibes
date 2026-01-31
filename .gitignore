@@ -4,3 +4,5 @@ venv/
 __pycache__/
 instance/
 your_database.db
+*.db
+instance/

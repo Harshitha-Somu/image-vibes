@@ -2,20 +2,30 @@ import os
 from flask import Flask, render_template, request, session, redirect, url_for,flash
 from PIL import Image
 from transformers import BlipProcessor, BlipForConditionalGeneration
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 
 # Initialize Flask app
 app = Flask(__name__)
 app.secret_key = 'supersecretkey123'  # Required for session management
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    firstname = db.Column(db.String(100))
+    lastname = db.Column(db.String(100))
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    password = db.Column(db.String(200), nullable=False)
+
 
 # Load the BLIP captioning model and processor
 processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-base")
 model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-base")
-
-
-# Dummy authentication function (you can replace this with DB logic)
-def is_valid_user(username, password):
-    return username == "Harshitha_somu" and password == "harshi1234"
 
 
 # Route for homepage
@@ -27,18 +37,29 @@ def index():
     return render_template("index.html", username=username)
 
 
-# Route for login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    error = None
+
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        if is_valid_user(username, password):
-            session['username'] = username
+
+        user = User.query.filter_by(username=username).first()
+
+        if user and check_password_hash(user.password, password):
+            session['username'] = user.username
             return redirect(url_for('index'))
         else:
-            return "Invalid credentials", 401
-    return render_template('login.html')
+            error = "Invalid username or password"
+
+    return render_template('login.html', error=error)
+
+
+
+
+
+
 
 
 # Route for logout
@@ -132,13 +153,52 @@ def register():
     session['username'] = username  # Log user in
     return redirect(url_for('index'))'''
 
+from sqlalchemy.exc import IntegrityError
+from werkzeug.security import generate_password_hash
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    error = None
+
     if request.method == 'POST':
-        # process registration here...
-        # if success:
-        return redirect(url_for('index'))
-    return render_template('register.html')
+        firstname = request.form['firstname']
+        lastname = request.form['lastname']
+        email = request.form['email']
+        username = request.form['username']
+        password = request.form['password']
+        confirm_password = request.form['confirm_password']
+
+        if password != confirm_password:
+            error = "Passwords do not match"
+            return render_template('login.html', error=error, show_register=True)
+
+        hashed_password = generate_password_hash(password)
+
+        new_user = User(
+            firstname=firstname,
+            lastname=lastname,
+            email=email,
+            username=username,
+            password=hashed_password
+        )
+
+        try:
+            db.session.add(new_user)
+            db.session.commit()
+            session['username'] = username
+            return redirect(url_for('index'))
+
+        except IntegrityError:
+            db.session.rollback()
+            error = "Email or username already registered"
+
+    return render_template('login.html', error=error, show_register=True)
+
+
+
+
+
+
 
 @app.route('/profile')
 def profile():
@@ -146,4 +206,4 @@ def profile():
 
 # Run the app
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=7860)

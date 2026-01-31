@@ -90,8 +90,15 @@
           <input type="password" class="form-control" name="password" required />
         </div>
         <div class="d-grid">
-          <button type="submit" class="btn btn-primary">Login</button>
-        </div>
+  <button type="submit" class="btn btn-primary">Login</button>
+</div>
+
+{% if error %}
+  <div class="alert alert-danger mt-3 text-center">
+    {{ error }}
+  </div>
+{% endif %}
+
       </form>
       <div class="register-link">
         <p>
@@ -130,9 +137,7 @@
           <input type="password" class="form-control" name="confirm_password" required />
         </div>
         <div class="d-grid">
-          <!--<button type="submit" class="btn btn-success">Register</button>-->
-          <button type="button" onclick="window.location.href='index.html'" class="btn btn-success">Register</button>
-
+          <button type="submit" class="btn btn-success">Register</button>
         </div>
       </form>
       <div class="register-link">
@@ -154,18 +159,12 @@
       document.getElementById('register-form').classList.add('hidden');
       document.getElementById('login-form').classList.remove('hidden');
     }
-    
-
-document.querySelector('#register-form form').addEventListener('submit', function(e) {
-  e.preventDefault();  // Prevent default form submission (optional, if you want to do ajax later)
-
-  // You can do validation or ajax here if needed
-
-  // For now just redirect to index.html immediately after submit button clicked
-  window.location.href = 'index.html';
-});
-
-
   </script>
+  {% if show_register %}
+<script>
+  showRegister();
+</script>
+{% endif %}
+
 </body>
 </html>
